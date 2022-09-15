@@ -8,30 +8,30 @@ typedef cv::Point3_<uint8_t> Pixel;
 using namespace std;
 using namespace cv;
 
-string BrightScale = " .,-~:;=!*#$@";
+const string BrightScale = " .,-~:;=!*#$@";
 
 int main(){
-
 	string path;
 	cout << "Gimme path\n";
 	cin >> path;
 
 	Mat image = imread(path);
-
 	if (image.empty()){
 		cout << "Ur path sucks" << endl;
 		return -1;
 	}
+
 	vector<vector<char>> output(image.rows);
 	for (auto& e : output)
 		e.resize(image.cols);
+
 	int height = 0;
 	int width = 0;
 	for (Pixel& p : cv::Mat_<Pixel>(image)) {
 	
-		double bright = (0.2126 * p.x) + (0.7152 * p.y) + (0.0722 * p.z); // formula for brightness
+		double bright = (0.2126 * p.x) + (0.7152 * p.y) + (0.0722 * p.z); //formula for brightness
 		int rounded = round(bright/19);
-		
+
 		if (rounded > 12)
 			rounded = 12;
 
