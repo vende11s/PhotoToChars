@@ -8,12 +8,23 @@ typedef cv::Point3_<uint8_t> Pixel;
 using namespace std;
 using namespace cv;
 
-const string BrightScale = " .,-~:;=!*#$@";
+const string LongBrightScale = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+const string ShortBrightScale = " .,-~:;=!*#$@";
 
 int main(){
 	string path;
+	char c;
 	cout << "Gimme path\n";
 	cin >> path;
+	cout << "1 for Long Bright Scale, anything else for Short Bright Scale\n";
+	cin >> c;
+
+	string BrightScale;
+	if (c == '1')
+		BrightScale = LongBrightScale;
+	else 
+		BrightScale = ShortBrightScale;
+	
 
 	Mat image = imread(path);
 	if (image.empty()){
@@ -30,10 +41,10 @@ int main(){
 	for (Pixel& p : cv::Mat_<Pixel>(image)) {
 	
 		double bright = (0.2126 * p.x) + (0.7152 * p.y) + (0.0722 * p.z); //formula for brightness
-		int rounded = round(bright/19);
+		int rounded = round(bright/(255.0/BrightScale.size()-1));
 
-		if (rounded > 12)
-			rounded = 12;
+		if (rounded > BrightScale.size() - 2)
+			rounded = BrightScale.size() - 2;
 
 		output[height][width] = BrightScale[rounded];
 
@@ -55,6 +66,5 @@ int main(){
 	}
 	out.close();
 	cout << "done";
-	cin >> path;
 }
 
